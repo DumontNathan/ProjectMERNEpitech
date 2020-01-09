@@ -11,6 +11,7 @@ class Login extends Component {
     };
   }
   onChange = e => {
+    // Modify state according to what is writen on the inputs
     this.setState({ [e.target.id]: e.target.value });
   };
   onSubmit = e => {
@@ -37,7 +38,7 @@ class Login extends Component {
 
             <div className="col s12" style={{ paddingLeft: "11.250px" }}>
               <h4 className="white-text text-darken-1">
-                <b>Login</b> below
+                <b>Login</b> here
               </h4>
               <p className="white-text text-darken-1">
                 Don't have an account? <Link to="/register">Register</Link>

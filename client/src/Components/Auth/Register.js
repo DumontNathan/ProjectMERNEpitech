@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import classnames from "classnames";
+import axios from 'axios';
 
 class Register extends Component {
   constructor() {
@@ -13,8 +15,11 @@ class Register extends Component {
     };
   }
   onChange = e => {
+    // Modify state according to what is writen on the inputs
     this.setState({ [e.target.id]: e.target.value });
   };
+
+  
   onSubmit = e => {
     e.preventDefault();
     const newUser = {
@@ -24,6 +29,16 @@ class Register extends Component {
       password2: this.state.password2
     };
     console.log(newUser);
+
+    // POST newUser to database
+    axios.post(`/api/users/register`, newUser )
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      }).catch(error => {
+        console.log(error.response)
+    });
+
   };
   render() {
     const { errors } = this.state;
@@ -37,7 +52,7 @@ class Register extends Component {
             </Link>
             <div className="col s12" style={{ paddingLeft: "11.250px" }}>
               <h4 className="white-text text-darken-1">
-                <b>Register</b> below
+                <b>Register</b> here
               </h4>
               <p className="white-text text-darken-1">
                 Already have an account? <Link to="/login">Log in</Link>
@@ -47,13 +62,13 @@ class Register extends Component {
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
-                  value={this.state.name}
-                  error={errors.name}
-                  id="name"
+                  value={this.state.username}
+                  error={errors.username}
+                  id="username"
                   type="text"
                   className="white-text text-darken-1"
                 />
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">Username</label>
               </div>
               <div className="input-field col s12">
                 <input
