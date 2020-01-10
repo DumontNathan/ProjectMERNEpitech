@@ -45,7 +45,7 @@ class Register extends Component {
   render() {
     const { redirection } = this.state;
     if (redirection) {
-      return <Redirect to="/login" />;
+    return <Redirect to={{ pathname: "/login", state: "You are registered. You can now log in." }}/>;
     }
     return (
       <div className="container">

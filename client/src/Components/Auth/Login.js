@@ -35,7 +35,7 @@ class Login extends Component {
               <i className="material-icons left">keyboard_backspace</i> Back to
               home
             </Link>
-
+            <span className="green-text">{this.props.location.state}</span>
             <div className="col s12" style={{ paddingLeft: "11.250px" }}>
               <h4 className="white-text text-darken-1">
                 <b>Login</b> here
