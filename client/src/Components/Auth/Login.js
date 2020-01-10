@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import passport from "passport";
 
 class Login extends Component {
   constructor() {
@@ -21,9 +23,23 @@ class Login extends Component {
       password: this.state.password
     };
     console.log(userData);
+    console.log(this.state);
+
+    // axios
+    //   .post(
+    //     `/api/users/login`,
+    //     passport.authenticate("jwt", userData),
+    //     function(req, res) {
+    //       res.send(req.user.profile);
+    //       console.log(req.user.profile);
+    //     }
+    //   )
+    //   .catch(error => {
+    //     console.log(error.response);
+    //     this.setState({ errors: error.response.data });
+    //   });
   };
   render() {
-    const { errors } = this.state;
     return (
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
@@ -49,23 +65,23 @@ class Login extends Component {
                 <input
                   onChange={this.onChange}
                   value={this.state.email}
-                  error={errors.email}
                   id="email"
                   type="email"
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="email">Email</label>
+                <span className="red-text">{this.state.errors.email}</span>
               </div>
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
                   value={this.state.password}
-                  error={errors.password}
                   id="password"
                   type="password"
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="password">Password</label>
+                <span className="red-text">{this.state.errors.password}</span>
               </div>
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button
