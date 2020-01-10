@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import classnames from "classnames";
-import axios from 'axios';
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
 
 class Register extends Component {
   constructor() {
@@ -11,7 +10,8 @@ class Register extends Component {
       email: "",
       password: "",
       password2: "",
-      errors: {}
+      errors: {},
+      redirection: false
     };
   }
   onChange = e => {
@@ -19,7 +19,6 @@ class Register extends Component {
     this.setState({ [e.target.id]: e.target.value });
   };
 
-  
   onSubmit = e => {
     e.preventDefault();
     const newUser = {
@@ -31,22 +30,31 @@ class Register extends Component {
     console.log(newUser);
 
     // POST newUser to database
-    axios.post(`/api/users/register`, newUser )
+    axios
+      .post(`/api/users/register`, newUser)
       .then(res => {
         console.log(res);
         console.log(res.data);
-      }).catch(error => {
-        console.log(error.response)
-    });
-
+        this.setState({ redirection: true });
+      })
+      .catch(error => {
+        console.log(error.response.data);
+        this.setState({ errors: error.response.data });
+      });
   };
   render() {
-    const { errors } = this.state;
+    const { redirection } = this.state;
+    if (redirection) {
+      return <Redirect to="/login" />;
+    }
     return (
       <div className="container">
         <div className="row">
           <div className="col s8 offset-s2">
-            <Link to="/" className="btn-flat waves-effect white-text text-darken-1">
+            <Link
+              to="/"
+              className="btn-flat waves-effect white-text text-darken-1"
+            >
               <i className="material-icons left">keyboard_backspace</i> Back to
               home
             </Link>
@@ -63,45 +71,45 @@ class Register extends Component {
                 <input
                   onChange={this.onChange}
                   value={this.state.username}
-                  error={errors.username}
                   id="username"
                   type="text"
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="name">Username</label>
+                <span className="red-text">{this.state.errors.username}</span>
               </div>
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
                   value={this.state.email}
-                  error={errors.email}
                   id="email"
                   type="email"
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="email">Email</label>
+                <span className="red-text">{this.state.errors.email}</span>
               </div>
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
                   value={this.state.password}
-                  error={errors.password}
                   id="password"
                   type="password"
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="password">Password</label>
+                <span className="red-text">{this.state.errors.password}</span>
               </div>
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
                   value={this.state.password2}
-                  error={errors.password2}
                   id="password2"
                   type="password"
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="password2">Confirm Password</label>
+                <span className="red-text">{this.state.errors.password2}</span>
               </div>
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button
