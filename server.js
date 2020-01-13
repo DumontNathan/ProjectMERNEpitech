@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
 const passport = require("passport");
+const cookieParser = require("cookie-parser");
 
 // User routes import
 const users = require("./routes/api/users");
@@ -14,6 +15,10 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
+// Cookieparser middleware
+app.use(cookieParser());
+
 
 // DB Config
 const db = require("./config/keys").mongoURI;

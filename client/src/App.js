@@ -4,6 +4,7 @@ import Navbar from "./Components/Layout/Navbar";
 import Landing from "./Components/Layout/Landing";
 import Register from "./Components/Auth/Register";
 import Login from "./Components/Auth/Login";
+import Dashboard from "./Components/Auth/Dashboard"
 import "./App.css"
 
 class App extends Component {
@@ -16,6 +17,7 @@ class App extends Component {
           <Route exact path="/" component={Landing} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/dashboard" component={Dashboard} />
         </div>
       </Router>
     );

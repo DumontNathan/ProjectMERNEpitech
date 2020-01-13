@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import passport from "passport";
 
 class Login extends Component {
   constructor() {
@@ -9,7 +8,8 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      errors: {}
+      errors: {},
+      redirection: false
     };
   }
   onChange = e => {
@@ -22,24 +22,25 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     };
-    console.log(userData);
-    console.log(this.state);
+    // console.log(userData);
+    // console.log(this.state);
 
-    // axios
-    //   .post(
-    //     `/api/users/login`,
-    //     passport.authenticate("jwt", userData),
-    //     function(req, res) {
-    //       res.send(req.user.profile);
-    //       console.log(req.user.profile);
-    //     }
-    //   )
-    //   .catch(error => {
-    //     console.log(error.response);
-    //     this.setState({ errors: error.response.data });
-    //   });
+    axios
+      .post(`/api/users/login`, userData)
+      .then(res => {
+        console.log(res);
+        this.setState({ redirection: true });
+      })
+      .catch(error => {
+        console.log(error.response);
+        this.setState({ errors: error.response.data });
+      });
   };
   render() {
+    const { redirection } = this.state;
+    if (redirection) {
+    return <Redirect to={{ pathname: "/dashboard"}}/>;
+    }
     return (
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
@@ -70,7 +71,7 @@ class Login extends Component {
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="email">Email</label>
-                <span className="red-text">{this.state.errors.email}</span>
+                <span className="red-text">{this.state.errors.email}{this.state.errors.emailnotfound}</span>
               </div>
               <div className="input-field col s12">
                 <input
@@ -81,7 +82,7 @@ class Login extends Component {
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="password">Password</label>
-                <span className="red-text">{this.state.errors.password}</span>
+                <span className="red-text">{this.state.errors.password}{this.state.errors.passwordincorrect}</span>
               </div>
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button

@@ -4,6 +4,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 
+// Validate token middleware
+const withAuth = require("../../validateToken");
+
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
@@ -75,19 +78,32 @@ router.post("/login", (req, res) => {
           username: user.username
         };
         // Sign token
-        jwt.sign(
+        const token = jwt.sign(
           payload,
           keys.secretOrKey,
           {
             expiresIn: 31556926 // 1 year in seconds
-          },
-          (err, token) => {
-            res.json({
-              success: true,
-              token: "Bearer " + token
-            });
           }
+          // (err, token) => {
+          //   res.json({
+          //     success: true,
+          //     token: "Bearer " + token
+          //   });
+          // }
         );
+        const userData = {
+          username: user.username,
+          email: user.email
+        };
+        console.log(userData);
+        res.cookie("user", userData, {
+          expires: new Date(Date.now() + 900000),
+          httpOnly: true
+        });
+        //Store the token in a cookie
+        res.cookie("token", token, { httpOnly: true }).sendStatus(200);
+
+        // res.cookie("userData", userData)
       } else {
         return res
           .status(400)
@@ -95,6 +111,14 @@ router.post("/login", (req, res) => {
       }
     });
   });
+});
+
+router.get("/dashboard", withAuth, function(req, res) {
+  const username = req.cookies.user.username;
+  const email = req.cookies.user.email;
+  res.json({ email: email, username: username });
+  console.log(req.cookies.token);
+  console.log(req.cookies.user);
 });
 
 // To use the router elsewhere
