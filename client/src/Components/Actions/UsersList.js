@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom"
 import axios from "axios";
 
 class UsersList extends Component {
@@ -26,18 +27,13 @@ class UsersList extends Component {
       <div className="container center">
         <div class="row">
           <div class="col s12 m3">
-            <button
-              style={{
-                width: "150px",
-                borderRadius: "3px",
-                letterSpacing: "1.5px",
-                marginTop: "1rem"
-              }}
-              onClick={this.onDashBoardClick}
-              className="btn btn-large waves-effect waves-light"
+            <Link
+              to="/dashboard"
+              className="btn-flat waves-effect white-text text-darken-1"
             >
-              Dashboard
-            </button>
+              <i className="material-icons left">keyboard_backspace</i> Back to
+              dashboard
+            </Link>
             {this.state.users.map(user => (
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">

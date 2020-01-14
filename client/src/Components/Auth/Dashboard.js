@@ -63,7 +63,7 @@ class Dashboard extends Component {
             <br></br>
             <button
               style={{
-                width: "150px",
+                width: "200px",
                 borderRadius: "3px",
                 letterSpacing: "1.5px",
                 marginTop: "1rem"
@@ -71,7 +71,7 @@ class Dashboard extends Component {
               onClick={this.onListClick}
               className="btn btn-large waves-effect waves-light"
             >
-              Users
+              Show users
             </button>
           </div>
         </div>
