@@ -4,8 +4,11 @@ import Navbar from "./Components/Layout/Navbar";
 import Landing from "./Components/Layout/Landing";
 import Register from "./Components/Auth/Register";
 import Login from "./Components/Auth/Login";
-import Dashboard from "./Components/Auth/Dashboard"
+import Dashboard from "./Components/Auth/Dashboard";
+import withAuth from './Components/Auth/withAuth';
+import withoutAuth from './Components/Auth/withoutAuth';
 import "./App.css"
+import UsersList from "./Components/Actions/UsersList";
 
 class App extends Component {
   render() {
@@ -14,10 +17,11 @@ class App extends Component {
         <div className="App">
           <Navbar />
           <br></br>
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/" component={withoutAuth(Landing)} />
+          <Route exact path="/register" component={withoutAuth(Register)} />
+          <Route exact path="/login" component={withoutAuth(Login)} />
+          <Route exact path="/dashboard" component={withAuth(Dashboard)} />
+          <Route exact path="/userslist" component={withAuth(UsersList)} />
         </div>
       </Router>
     );

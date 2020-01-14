@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 
 class Dashboard extends Component {
@@ -7,9 +6,8 @@ class Dashboard extends Component {
     super();
     //Set default message
     this.state = {
-      username : "",
-      email : "",
-      redirect : false
+      username: "",
+      email: ""
     };
   }
 
@@ -18,23 +16,29 @@ class Dashboard extends Component {
       .get(`/api/users/dashboard`)
       .then(res => {
         console.log(res);
-        this.setState({ username: res.data.username, email : res.data.email});
+        this.setState({ username: res.data.username, email: res.data.email });
       })
       .catch(error => {
-        // this.setState({ redirect: true });
         console.log(error.response);
       });
   }
 
   onLogoutClick = e => {
     e.preventDefault();
+    axios
+      .get(`/api/users/logout`)
+      .then(this.props.history.push("/"))
+      .catch(error => {
+        console.log(error.response);
+      });
   };
 
+  onListClick = e => {
+    e.preventDefault();
+    this.props.history.push('/userslist')
+  }
+
   render() {
-    const { redirection } = this.state;
-    if (redirection) {
-    return <Redirect to={{ pathname: "/login", state: "You must log in..."}}/>;
-    }
     return (
       <div style={{ height: "75vh" }} className="container valign-wrapper">
         <div className="row">
@@ -55,6 +59,19 @@ class Dashboard extends Component {
               className="btn btn-large waves-effect waves-light"
             >
               Logout
+            </button>
+            <br></br>
+            <button
+              style={{
+                width: "150px",
+                borderRadius: "3px",
+                letterSpacing: "1.5px",
+                marginTop: "1rem"
+              }}
+              onClick={this.onListClick}
+              className="btn btn-large waves-effect waves-light"
+            >
+              Users
             </button>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 class Login extends Component {
@@ -9,7 +9,6 @@ class Login extends Component {
       email: "",
       password: "",
       errors: {},
-      redirection: false
     };
   }
   onChange = e => {
@@ -28,8 +27,11 @@ class Login extends Component {
     axios
       .post(`/api/users/login`, userData)
       .then(res => {
-        console.log(res);
-        this.setState({ redirection: true });
+        if (res.status === 200) {
+          console.log(res);
+          this.props.history.push('/dashboard');
+          // this.setState({ redirection: true });
+        }
       })
       .catch(error => {
         console.log(error.response);
@@ -37,10 +39,6 @@ class Login extends Component {
       });
   };
   render() {
-    const { redirection } = this.state;
-    if (redirection) {
-    return <Redirect to={{ pathname: "/dashboard"}}/>;
-    }
     return (
       <div className="container">
         <div style={{ marginTop: "4rem" }} className="row">
@@ -71,7 +69,10 @@ class Login extends Component {
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="email">Email</label>
-                <span className="red-text">{this.state.errors.email}{this.state.errors.emailnotfound}</span>
+                <span className="red-text">
+                  {this.state.errors.email}
+                  {this.state.errors.emailnotfound}
+                </span>
               </div>
               <div className="input-field col s12">
                 <input
@@ -82,7 +83,10 @@ class Login extends Component {
                   className="white-text text-darken-1"
                 />
                 <label htmlFor="password">Password</label>
-                <span className="red-text">{this.state.errors.password}{this.state.errors.passwordincorrect}</span>
+                <span className="red-text">
+                  {this.state.errors.password}
+                  {this.state.errors.passwordincorrect}
+                </span>
               </div>
               <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button

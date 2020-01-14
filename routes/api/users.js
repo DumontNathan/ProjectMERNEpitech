@@ -82,7 +82,7 @@ router.post("/login", (req, res) => {
           payload,
           keys.secretOrKey,
           {
-            expiresIn: 31556926 // 1 year in seconds
+            expiresIn: 600000 //
           }
           // (err, token) => {
           //   res.json({
@@ -97,11 +97,11 @@ router.post("/login", (req, res) => {
         };
         console.log(userData);
         res.cookie("user", userData, {
-          expires: new Date(Date.now() + 900000),
+          expires: new Date(Date.now() + 9000000000),
           httpOnly: true
         });
         //Store the token in a cookie
-        res.cookie("token", token, { httpOnly: true }).sendStatus(200);
+        res.cookie("token", token).sendStatus(200);
 
         // res.cookie("userData", userData)
       } else {
@@ -113,12 +113,35 @@ router.post("/login", (req, res) => {
   });
 });
 
+// Dashboard
+
 router.get("/dashboard", withAuth, function(req, res) {
   const username = req.cookies.user.username;
   const email = req.cookies.user.email;
   res.json({ email: email, username: username });
   console.log(req.cookies.token);
   console.log(req.cookies.user);
+});
+
+// Check Token
+router.get("/checkToken", withAuth, function(req, res) {
+  res.sendStatus(200);
+});
+
+// Logout
+router.get("/logout", function(req, res) {
+  console.log(req.cookies.token);
+  res.clearCookie("token");
+  res.status(200).json('User Logged out')
+});
+
+// Get all users
+
+router.get('/userslist', function(req, res, next) {
+  User.find(function (err, User) {
+    if (err) return next(err);
+    res.json(User);
+  });
 });
 
 // To use the router elsewhere
