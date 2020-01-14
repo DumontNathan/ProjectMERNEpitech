@@ -17,11 +17,6 @@ class UsersList extends Component {
     });
   }
 
-  onDashBoardClick = e => {
-    e.preventDefault();
-    this.props.history.push("/dashboard");
-  };
-
   render() {
     return (
       <div className="container center">
@@ -35,7 +30,7 @@ class UsersList extends Component {
               dashboard
             </Link>
             {this.state.users.map(user => (
-              <div class="card blue-grey darken-1">
+              <div class="card teal darken-1">
                 <div class="card-content white-text">
                   <span class="card-title">{user.username}</span>
                   <p>{user.email}</p>
